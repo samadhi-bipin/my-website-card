@@ -148,36 +148,89 @@ body{
 
 
 
-.left_container .icons ion-icon:hover{
-    
+.left_container .icons a {
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 1.1em;
+    text-decoration: none;
+    color: white;
+    font-size: 1.6rem;
+}
+
+.left_container .icons a ion-icon {
+    width: 1.4em;
+    height: 1.9em;
+    transition: all 0.4s ease;
+    color: white;
+}
+
+.left_container .icons a:hover ion-icon {
     transform: translateY(5px);
-    cursor: pointer;
-    transition: all .4 ease;
     color: turquoise;
 }
-.left_container .icons {
-       
-    display: flex;
-    width: 70%;
-    margin-top: 1.5em;
-    /* border: 1px solid yellow; */
-    
 
-}
-
-
-
-.left_container .icons ion-icon{
-   
-            width: 100%;
-            height: 2em;
-            color: white;
-          
-}
     
 .flex{
     display: flex;
     justify-content: flex-start;
     
 }
+
+/* 🔁 Blinking + scaling effect for the bottom-right arrow icon */
+.arr_container ion-icon {
+    transform: rotate(45deg);
+    animation: blink-pop 1.5s infinite;
+    font-size: 1.6rem;
+    transition: transform 0.4s ease;
+    color: black;
+    cursor: pointer;
+}
+
+/* 🖱️ On hover: rotate to 135deg (opposite), scale up, stop blinking */
+.arr_container ion-icon:hover {
+    animation: none;
+    transform: rotate(225deg) scale(1.9);
+}
+
+/* 💡 Custom animation: fade + scale up then back */
+@keyframes blink-pop {
+    0% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: rotate(45deg) scale(1.9);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+}
+
+/* ✨ Blink animation add-outline */
+
+@keyframes blink {
+ 0% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: rotate(45deg) scale(1.9);
+    }
+    100% {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+}
+
+/* 🔴 Apply blinking only to the plus icon */
+.cancel ion-icon {
+  animation: blink 1.5s infinite;
+  transition: opacity 0.3s ease;
+  font-size: 1.6rem;
+  color: black;
+}
+
 
