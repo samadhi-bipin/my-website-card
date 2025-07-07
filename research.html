@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melbourne Cost of Living Analysis for a Student Couple</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F0F4F8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .kpi-value {
+            color: #FF4136;
+        }
+        .kpi-label {
+            color: #0074D9;
+        }
+        .header-bg {
+             background-color: #001f3f;
+        }
+        .section-bg {
+            background-color: #FFFFFF;
+        }
+        .accent-color {
+            color: #FF4136;
+        }
+        .primary-text {
+            color: #001f3f;
+        }
+        .secondary-text {
+            color: #7FDBFF;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="header-bg text-white p-6 md:p-10 text-center">
+        <h1 class="text-4xl md:text-5xl font-black mb-2">Melbourne Relocation Reality Check</h1>
+        <p class="text-lg md:text-xl secondary-text max-w-3xl mx-auto">A Financial & Suburban Analysis for an International Student Couple</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="budget-discrepancy" class="card">
+            <h2 class="text-3xl font-bold text-center primary-text mb-2">The Budget Gap: Expectation vs. Reality</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Your initial monthly budget of AUD $2,200 is significantly lower than realistic costs. This section visualizes the gap between your estimate and a more accurate, data-backed budget for a couple in Melbourne.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="text-center">
+                    <p class="text-2xl font-bold kpi-label">Your Estimated Monthly Budget</p>
+                    <p class="text-6xl font-black kpi-value mb-4">AUD $2,200</p>
+                    <p class="text-2xl font-bold kpi-label">Realistic 'Frugal' Monthly Budget</p>
+                    <p class="text-6xl font-black kpi-value">AUD $3,265</p>
+                    <p class="text-gray-500 mt-4 text-lg">This represents a <span class="font-bold accent-color">48% underestimation</span>, highlighting the need for immediate budget recalibration.</p>
+                </div>
+                <div>
+                     <div class="chart-container">
+                        <canvas id="budgetBreakdownChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="suburb-comparison" class="card">
+            <h2 class="text-3xl font-bold text-center primary-text mb-2">Suburban Showdown: Where to Live?</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Choosing a suburb involves balancing rent, commute time, and safety. Your initial choices, Footscray and Glenroy, present clear trade-offs. Here’s how they and other alternatives compare.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Median Weekly Rent (1-Bed Unit)</h3>
+                    <p class="text-gray-600 text-center mb-4">Your budget of $350-$400/week is not viable in Footscray. This chart shows where it fits elsewhere.</p>
+                    <div class="chart-container">
+                        <canvas id="rentComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Commute Time to Flinders St. (Train)</h3>
+                     <p class="text-gray-600 text-center mb-4">Convenience is key. Footscray offers the fastest commute, but alternatives remain efficient.</p>
+                    <div class="chart-container">
+                        <canvas id="commuteTimeChart"></canvas>
+                    </div>
+                </div>
+                <div class="md:col-span-2">
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Community Safety: A Critical Factor</h3>
+                    <p class="text-gray-600 text-center mb-4">Safety was a stated priority. The violent crime rates vary dramatically across suburbs, with Footscray being a significant outlier.</p>
+                    <div class="chart-container mx-auto">
+                        <canvas id="crimeRateChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="financial-readiness" class="card">
+            <h2 class="text-3xl font-bold text-center primary-text mb-2">Financial Readiness: Visa vs. Reality</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">Your AUD $80,000 loan is excellent for your visa application but requires careful management to cover actual living costs and significant upfront expenses.</p>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                 <div>
+                    <h3 class="text-2xl font-bold primary-text mb-4 text-center">Breakdown of Upfront Costs</h3>
+                    <p class="text-gray-600 mb-4 text-center">Beyond monthly bills, you must budget for these large, one-off expenses upon arrival.</p>
+                    <div class="chart-container">
+                        <canvas id="upfrontCostsChart"></canvas>
+                    </div>
+                </div>
+                <div class="text-center">
+                     <p class="text-2xl font-bold kpi-label">Partner's Potential Monthly Income</p>
+                    <p class="text-gray-600 mb-2">(20 hrs/wk @ $25/hr)</p>
+                    <p class="text-6xl font-black kpi-value mb-4">~AUD $2,165</p>
+                    <p class="text-gray-500 text-lg">Your husband's potential part-time work can cover over half of your realistic monthly budget, significantly easing financial pressure.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="recommendations" class="card">
+            <h2 class="text-3xl font-bold text-center primary-text mb-6">Key Takeaways & Strategic Recommendations</h2>
+            <div class="flow-root">
+                <ul class="-mb-8">
+                    <li>
+                        <div class="relative pb-8">
+                            <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                            <div class="relative flex space-x-3">
+                                <div>
+                                    <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                                        <span class="text-white font-bold">1</span>
+                                    </span>
+                                </div>
+                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                    <div>
+                                        <p class="text-lg text-gray-800 font-semibold">Revise Your Budget Immediately</p>
+                                        <p class="text-gray-600">Adopt a realistic monthly budget of at least <span class="font-bold">$3,265</span>. Your initial estimate is insufficient.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                     <li>
+                        <div class="relative pb-8">
+                            <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
+                            <div class="relative flex space-x-3">
+                                <div>
+                                    <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                                        <span class="text-white font-bold">2</span>
+                                    </span>
+                                </div>
+                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                    <div>
+                                        <p class="text-lg text-gray-800 font-semibold">Strategically Re-evaluate Suburbs</p>
+                                        <p class="text-gray-600">Consider <span class="font-bold">West Footscray</span>. It offers the best balance of affordability ($350/wk rent), safety, and a quick commute (~24 mins).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="relative pb-8">
+                            <div class="relative flex space-x-3">
+                                <div>
+                                    <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
+                                        <span class="text-white font-bold">3</span>
+                                    </span>
+                                </div>
+                                <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
+                                    <div>
+                                        <p class="text-lg text-gray-800 font-semibold">Prepare for High Upfront Costs</p>
+                                        <p class="text-gray-600">Set aside <span class="font-bold">~$7,000-$9,000</span> for your rental bond, OSHC, and initial household setup.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-6 bg-gray-800 text-gray-400">
+        <p>This infographic is based on the "Analytical Review of Cost of Living and Suburban Suitability" report. Data is for planning purposes and subject to market changes.</p>
+    </footer>
+
+    <script>
+        const chartTooltip = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+        
+        const colors = {
+            blue: '#0074D9',
+            aqua: '#7FDBFF',
+            red: '#FF4136',
+            navy: '#001f3f',
+            teal: '#39CCCC',
+            green: '#2ECC40',
+            orange: '#FF851B',
+            gray: '#AAAAAA'
+        };
+
+        const wrapLabel = (label) => {
+            const maxLen = 16;
+            if (label.length <= maxLen) return label;
+            
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLen) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+
+        const budgetCtx = document.getElementById('budgetBreakdownChart').getContext('2d');
+        new Chart(budgetCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Rent', 'Groceries', ['Utilities &', 'Internet'], 'Transport'],
+                datasets: [{
+                    label: 'Your Estimate (AUD)',
+                    data: [1625, 400, 150, 160], 
+                    backgroundColor: colors.aqua,
+                    borderColor: colors.blue,
+                    borderWidth: 1
+                }, {
+                    label: 'Realistic Frugal Cost (AUD)',
+                    data: [1515, 700, 300, 280],
+                    backgroundColor: colors.red,
+                    borderColor: colors.navy,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                 ...chartTooltip,
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return 'AUD $' + value; }
+                        }
+                    }
+                },
+                plugins: {
+                    ...chartTooltip.plugins,
+                    title: {
+                        display: true,
+                        text: 'Monthly Expense Breakdown: Estimate vs. Reality',
+                        font: { size: 16 }
+                    }
+                }
+            }
+        });
+
+        const rentCtx = document.getElementById('rentComparisonChart').getContext('2d');
+        new Chart(rentCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Albion', 'Glenroy', 'West Footscray', 'Maidstone', 'Footscray'],
+                datasets: [{
+                    label: 'Median 1-Bed Rent (AUD/week)',
+                    data: [320, 350, 350, 395, 450],
+                    backgroundColor: [colors.green, colors.green, colors.green, colors.orange, colors.red],
+                }]
+            },
+            options: {
+                ...chartTooltip,
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return '$' + value; }
+                        }
+                    }
+                },
+                plugins: {
+                    ...chartTooltip.plugins,
+                    legend: { display: false },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                xMin: 400,
+                                xMax: 400,
+                                borderColor: 'rgb(255, 99, 132)',
+                                borderWidth: 2,
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const commuteCtx = document.getElementById('commuteTimeChart').getContext('2d');
+        new Chart(commuteCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Footscray', ['West', 'Footscray'], 'Albion', 'Glenroy', 'Maidstone'],
+                datasets: [{
+                    label: 'Avg. Commute Time (minutes)',
+                    data: [16, 24, 26, 30, 34],
+                    backgroundColor: [colors.green, colors.teal, colors.teal, colors.orange, colors.red],
+                }]
+            },
+            options: {
+                ...chartTooltip,
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                     y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) { return value + ' min'; }
+                        }
+                    }
+                },
+                plugins: {
+                    ...chartTooltip.plugins,
+                    legend: { display: false },
+                }
+            }
+        });
+        
+        const crimeCtx = document.getElementById('crimeRateChart').getContext('2d');
+        new Chart(crimeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['West Footscray', 'Maidstone', 'Victorian Average', 'Albion', 'Footscray'],
+                datasets: [{
+                    label: 'Violent Crime Rate (per 100k residents)',
+                    data: [1850, 2234, 2865, 3538, 7038],
+                    backgroundColor: [colors.green, colors.green, colors.blue, colors.orange, colors.red],
+                }]
+            },
+             options: {
+                ...chartTooltip,
+                responsive: true,
+                maintainAspectRatio: false,
+                 scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    ...chartTooltip.plugins,
+                    legend: { display: false },
+                }
+            }
+        });
+
+        const upfrontCostsCtx = document.getElementById('upfrontCostsChart').getContext('2d');
+        new Chart(upfrontCostsCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [['Household Setup', '(Est.)'], ['Couples OSHC', '(2-yr course)'], ['Rental Bond', '(4 wks @ $400)']],
+                datasets: [{
+                    label: 'Estimated Upfront Costs (AUD)',
+                    data: [4000, 4795, 1600],
+                    backgroundColor: [colors.blue, colors.red, colors.teal],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                ...chartTooltip,
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    ...chartTooltip.plugins,
+                    title: {
+                        display: true,
+                        text: 'Estimated Initial Outlay: ~AUD $10,395',
+                        font: { size: 16 }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                size: 12
+                            },
+                             generateLabels: (chart) => {
+                                const original = Chart.defaults.plugins.legend.labels.generateLabels;
+                                const labels = original.call(this, chart);
+                                labels.forEach(label => {
+                                    if(Array.isArray(chart.data.labels[label.index])) {
+                                        label.text = chart.data.labels[label.index].join(' ');
+                                    }
+                                });
+                                return labels;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
