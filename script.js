@@ -1,37 +1,40 @@
-// Grab elements
-const clc = document.querySelector(".cancel");
-const arr = document.querySelector(".arr_container");
-const left_container = document.querySelector(".left_container");
+document.addEventListener('DOMContentLoaded', function() {
+    // Select the main elements from the DOM
+    const container = document.getElementById('card-container');
+    const cover = document.getElementById('cover');
+    const backButton = document.getElementById('back-button');
+    
+    // Initialize the typewriter effect on the front page
+    new Typed('.typed', {
+        strings: ["a Coder.", "a Designer.", "a Freelancer.", "a Photographer."],
+        loop: true,
+        typeSpeed: 70,
+        backSpeed: 40,
+        backDelay: 2200,
+        smartBackspace: true
+    });
 
-// 👉 Open sliding panel on arrow click
-arr.addEventListener("click", () => {
-  arr.classList.add("active_arr");
-  if (left_container.classList.contains("off")) {
-    left_container.classList.remove("off");
-    left_container.classList.add("active");
-  }
+    /**
+     * Function to open the card.
+     * It adds the 'open' class to the main container, triggering the CSS animations.
+     */
+    function openCard() {
+        // Prevent re-opening if it's already open
+        if (container.classList.contains('open')) return;
+        container.classList.add('open');
+    }
+
+    /**
+     * Function to close the card.
+     * It removes the 'open' class from the main container, reversing the CSS animations.
+     */
+    function closeCard() {
+        // Prevent re-closing if it's already closed
+        if (!container.classList.contains('open')) return;
+        container.classList.remove('open');
+    }
+
+    // Add event listeners to the cover and the back button
+    cover.addEventListener('click', openCard);
+    backButton.addEventListener('click', closeCard);
 });
-
-// ❌ Close sliding panel on plus button click
-clc.addEventListener("click", () => {
-  arr.classList.remove("active_arr");
-  if (left_container.classList.contains("active")) {
-    left_container.classList.remove("active");
-    left_container.classList.add("off");
-  }
-});
-
-// 🔤 Initialize Typed.js effect
-const typed = document.querySelector('.typed');
-if (typed) {
-  let typed_strings = typed.getAttribute('data-typed-items');
-  typed_strings = typed_strings.split(',');
-  new Typed('.typed', {
-    strings: typed_strings,
-    loop: true,
-    typeSpeed: 80,
-    backSpeed: 50,
-    backDelay: 2000
-  });
-  
-}
