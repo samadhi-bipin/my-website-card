@@ -3,344 +3,745 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kusum's Visa Quest: The Ultimate Challenge</title>
+    <title>Quiz Application</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Custom styles for the quiz app */
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f0f4f8;
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-        .game-container {
-            max-width: 900px;
-            margin: 2rem auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        .story-panel {
-            background: linear-gradient(135deg, #4338CA, #6D28D9);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-        .story-panel h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-        .story-panel p {
-            font-size: 1.1rem;
-            margin-top: 1rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .progress-bar-container {
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 9999px;
-            height: 24px;
-            margin-top: 1.5rem;
-            overflow: hidden;
-            border: 2px solid white;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #34D399, #A7F3D0);
-            border-radius: 9999px;
-            transition: width 0.5s ease-in-out;
-            text-align: center;
-            color: #1F2937;
-            font-weight: 600;
-            font-size: 0.8rem;
-            line-height: 24px;
-        }
-        .stage-title {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #6D28D9;
-            padding: 1rem;
-            background-color: #F5F3FF;
-            border-bottom: 1px solid #E5E7EB;
-            border-top: 1px solid #E5E7EB;
-        }
-        .question-panel {
-            padding: 2.5rem;
-        }
-        .question-text {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1F2937;
-            margin-bottom: 1.5rem;
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-        .option-btn {
-            background-color: #f9fafb;
-            border: 2px solid #e5e7eb;
-            color: #374151;
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-        }
-        .option-btn:hover:not(:disabled) {
-            border-color: #818CF8;
-            background-color: #EEF2FF;
-        }
-        .option-btn.correct {
-            background-color: #D1FAE5;
-            border-color: #34D399;
-            color: #065F46;
-        }
-        .option-btn.wrong {
-            background-color: #FEE2E2;
-            border-color: #F87171;
-            color: #991B1B;
-        }
-        .option-icon {
-            margin-right: 0.75rem;
-            font-size: 1.5rem;
-        }
-        .feedback-panel {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            border-radius: 12px;
-            font-size: 1rem;
-        }
-        .feedback-panel.correct {
-            background-color: #ECFDF5;
-            color: #047857;
-            border-left: 5px solid #34D399;
-        }
-        .feedback-panel.wrong {
-            background-color: #FEF2F2;
-            color: #B91C1C;
-            border-left: 5px solid #EF4444;
-        }
-        .feedback-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        #next-btn, #restart-btn {
-            display: block;
-            margin: 2rem auto 0;
-            padding: 0.75rem 2rem;
-            background: linear-gradient(135deg, #4F46E5, #6366F1);
-            color: white;
-            border: none;
-            border-radius: 9999px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        #next-btn:hover, #restart-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-        }
-        .final-screen {
-            text-align: center;
-            padding: 3rem;
-        }
-        .final-screen h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #4F46E5;
-        }
-        .final-screen p {
-            font-size: 1.2rem;
-            color: #4B5563;
-            margin-top: 1rem;
-        }
-        .final-score {
-            font-size: 4rem;
-            font-weight: 700;
-            color: #34D399;
-            margin: 2rem 0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 p-4">
 
-    <div id="game" class="game-container">
-        <div class="story-panel">
-            <h1>Kusum's Visa Quest</h1>
-            <p>Help Kusum navigate the four critical stages of her journey to Australia. Your knowledge is key to her success!</p>
-            <div class="progress-bar-container">
-                <div id="progress-bar" class="progress-bar">0%</div>
-            </div>
-        </div>
-
-        <div id="stage-container"></div>
-        <div id="question-container" class="question-panel"></div>
-        <div id="final-screen" class="final-screen hidden"></div>
+    <div id="app-container" class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-2xl transform transition-all duration-500 hover:scale-105">
+        <!-- Content will be dynamically loaded here by JavaScript -->
     </div>
 
     <script>
-        const questions = [
-            // Stage 1: Personal Profile (Easy)
-            { stage: "Stage 1: Building the Profile", question: "What is Kusum's current job title?", options: [{ text: "HR Intern", icon: "🧑‍💻" }, { text: "People & Culture Lead", icon: "🌟", correct: true }, { text: "CEO", icon: "👑" }, { text: "Accountant", icon: "💰" }], explanation: "Kusum holds a significant leadership role as the People & Culture Lead at Adex International Pvt. Ltd." },
-            { question: "How many years of HR leadership experience does Kusum have?", options: [{ text: "One year", icon: "☝️" }, { text: "Two years", icon: "✌️" }, { text: "Five years", icon: "🖐️", correct: true }, { text: "Ten years", icon: "🔟" }], explanation: "The document clearly states she has five years of HR leadership experience, making her well-prepared for advanced studies." },
-            { question: "What is her father's professional background?", options: [{ text: "Active Indian Army Officer", icon: "🎖️" }, { text: "Retired Honorary-Captain", icon: "🧑‍✈️", correct: true }, { text: "Businessman", icon: "💼" }, { text: "Doctor", icon: "�‍⚕️" }], explanation: "Her father is a retired Honorary-Captain from the Indian Army, providing a stable pension." },
-            { question: "Who will be accompanying Kusum to Australia as her dependent?", options: [{ text: "Her mother", icon: "👩" }, { text: "Her brother", icon: "👨" }, { text: "Her husband, Bipin", icon: "❤️", correct: true }, { text: "No one", icon: "🚶‍♀️" }], explanation: "Kusum states her husband, Bipin Gurung, will accompany her as her dependent." },
-            { question: "At the time of application, what is Kusum's age?", options: [{ text: "22", icon: "🎂" }, { text: "25", icon: "🎉" }, { text: "28", icon: "🎈", correct: true }, { text: "32", icon: "🎁" }], explanation: "She mentions being 28 years old, which, combined with her experience, shows her maturity for research studies." },
-            
-            // Stage 2: Financial Fortitude (Medium)
-            { stage: "Stage 2: Financial Fortitude", question: "What is the combined family income in NPR?", options: [{ text: "NPR 1.4 million", icon: "💵" }, { text: "NPR 3.03 million", icon: "💰", correct: true }, { text: "NPR 7 million", icon: "💸" }, { text: "NPR 20.8 million", icon: "🏦" }], explanation: "Her family has a combined income of NPR 3.03 million from her father's pension and mother's rental income." },
-            { question: "How much is the education loan Kusum has taken, in NPR?", options: [{ text: "NPR 3 million", icon: "✍️" }, { text: "NPR 5 million", icon: "📄" }, { text: "NPR 7 million", icon: "📜", correct: true }, { text: "NPR 10 million", icon: "📑" }], explanation: "To support her studies, Kusum has secured a significant education loan of NPR 7 million." },
-            { question: "What is the total value of her family's property in NPR?", options: [{ text: "NPR 7 million", icon: "🏡" }, { text: "NPR 15.5 million", icon: "🏘️" }, { text: "NPR 20.8 million", icon: "🏰", correct: true }, { text: "NPR 30 million", icon: "🌆" }], explanation: "The family's property is valued at NPR 20.8 million, indicating strong financial ties to Nepal." },
-            { question: "What is the approximate AUD equivalent of her education loan?", options: [{ text: "AUD 50,000", icon: "🇦🇺" }, { text: "AUD 65,000", icon: "🦘" }, { text: "AUD 80,000", icon: "🐨", correct: true }, { text: "AUD 100,000", icon: "🌊" }], explanation: "Her NPR 7 million loan is noted to be approximately AUD 80,000, showing her financial preparedness." },
-            { question: "What is the researched average weekly rent for a 1-bedroom unit in her target suburbs?", options: [{ text: "AUD 150-200", icon: "📉" }, { text: "AUD 250-300", icon: "📊" }, { text: "AUD 350-400", icon: "📈", correct: true }, { text: "AUD 450-500", icon: "🚀" }], explanation: "Her research on realestate.com.au and flatmates.com.au indicates an average weekly rent of AUD 350 to AUD 400." },
-
-            // Stage 3: Academic Ambition (Hard)
-            { stage: "Stage 3: Academic Ambition", question: "Which specific campus of Torrens University did Kusum choose?", options: [{ text: "Sydney Campus", icon: "🌉" }, { text: "Melbourne CBD Campus", icon: "🏙️" }, { text: "Flinders St Campus", icon: "📍", correct: true }, { text: "Online Campus", icon: "💻" }], explanation: "She specifically chose the Flinders St Campus for its strategic CBD location and access to industry networks." },
-            { question: "What was Kusum's GPA in her previous MBA program?", options: [{ text: "3.25/4", icon: "🥉" }, { text: "3.5/4", icon: "🥈" }, { text: "3.95/4", icon: "🥇", correct: true }, { text: "4.0/4", icon: "🏆" }], explanation: "She earned a top-ranked MBA with a GPA of 3.95/4, demonstrating strong academic capability." },
-            { question: "Which specific research center at Torrens is mentioned as a key attraction?", options: [{ text: "The Business Lab", icon: "🔬" }, { text: "The Innovation Hub", icon: "💡" }, { text: "COCA", icon: "🎨", correct: true }, { text: "The HR Institute", icon: "🧑‍💼" }], explanation: "She highlights access to research centers like COCA (Centre for Organisational Change and Agility) as a reason for choosing Torrens." },
-            { question: "What is a primary reason Nepalese universities are not suitable for her goals?", options: [{ text: "They are too expensive.", icon: "💳" }, { text: "They lack structured, research-intensive degrees.", icon: "📚", correct: true }, { text: "They do not offer MPhil programs.", icon: "🚫" }, { text: "They have no industry connections.", icon: "🤝" }], explanation: "She argues that Nepali universities lack structured, research-intensive programs with integrated core subjects and practitioner-led supervision, unlike Torrens." },
-            { question: "Which of these is NOT a specific course subject Kusum is interested in?", options: [{ text: "Applied Analytics", icon: "📊" }, { text: "Leading Research Innovation", icon: "🚀" }, { text: "Corporate Finance", icon: "📈", correct: true }, { text: "Methodology & Design", icon: "📝" }], explanation: "She mentions subjects that will help her evaluate training and implement HR strategies. Corporate Finance is not listed among them." },
-
-            // Stage 4: Future Vision (Very Hard)
-            { stage: "Stage 4: Future Vision", question: "Which of these is a specific company Kusum aims to work for upon returning to Nepal?", options: [{ text: "Adex International", icon: "🏢" }, { text: "Google Nepal", icon: "💻" }, { text: "Unilever Nepal", icon: "🌿", correct: true }, { text: "The World Bank", icon: "🌍" }], explanation: "She explicitly mentions her goal to work as a Senior HR-Consultant with leading firms like CG or Unilever Nepal." },
-            { question: "What is the estimated annual salary in NPR for a professional with post-master's experience in her target role?", options: [{ text: "NPR 1.0 - 1.4 million", icon: "💰" }, { text: "NPR 1.5 - 2.0 million", icon: "💸" }, { text: "NPR 2.5 - 3.0 million", icon: "🚀", correct: true }, { text: "NPR 3.5 - 4.0 million", icon: "💎" }], explanation: "Her research indicates that with post-master's experience, her earning potential increases to NPR 2.5 to 3.0 million annually." },
-            { question: "What is the name of the NGO for which Kusum serves as Chairperson?", options: [{ text: "Women in Tech", icon: "👩‍💻" }, { text: "HR Society Nepal", icon: "🧑‍🤝‍🧑" }, { text: "Bells of Nepal", icon: "🔔", correct: true }, { text: "Support for SMEs", icon: "🤝" }], explanation: "Her deep community ties are shown by her role as Chairperson of the NGO 'Bells of Nepal'." },
-            { question: "What is the primary purpose of establishing her own consultancy in the long term?", options: [{ text: "To maximize personal profit.", icon: "🤑" }, { text: "To support SMEs and mission-driven organizations.", icon: "🌱", correct: true }, { text: "To compete with large multinational firms.", icon: "⚔️" }, { text: "To work exclusively with government projects.", icon: "🏛️" }], explanation: "Her ultimate vision is to establish a research-informed HR consultancy focused on supporting SMEs and mission-driven organizations with evidence-based solutions." },
-            { question: "What key responsibility anchors her and her husband's intention to return to Nepal?", options: [{ text: "To manage the family property.", icon: "🏡" }, { text: "To support Bipin's single mother.", icon: "👵", correct: true }, { text: "To fulfill a government contract.", icon: "📜" }, { text: "To take over a family business.", icon: "📈" }], explanation: "A crucial incentive to return is their responsibility to support Bipin's mother, who is a single parent." }
+        // Quiz questions data extracted from the provided document
+        const quizQuestions = [
+            {
+                question: "What is the name of the course the student is enrolled in?",
+                options: [
+                    "A. Master of Business Administration",
+                    "B. Master of Research Studies (MRS24)",
+                    "C. Master of Data Science",
+                    "D. Master of Public Health"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the Student ID?",
+                options: [
+                    "A. A00984512",
+                    "B. A00198383",
+                    "C. A00234112",
+                    "D. A00012121"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the CRICOS Course Code?",
+                options: [
+                    "A. 117456L",
+                    "B. 110020K",
+                    "C. 115327K",
+                    "D. 112333M"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the study mode?",
+                options: [
+                    "A. Online",
+                    "B. Part Time",
+                    "C. Hybrid",
+                    "D. Full Time"
+                ],
+                answer: "D"
+            },
+            {
+                question: "Where is the campus located?",
+                options: [
+                    "A. Sydney",
+                    "B. Brisbane",
+                    "C. Victoria, Melbourne (Flinders St Campus)",
+                    "D. Adelaide"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the course start date?",
+                options: [
+                    "A. 1-Jan-2025",
+                    "B. 15-Sep-2025",
+                    "C. 1-Aug-2025",
+                    "D. 20-Sep-2025"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the course end date?",
+                options: [
+                    "A. 22-Aug-2027",
+                    "B. 1-Jan-2027",
+                    "C. 15-Dec-2026",
+                    "D. 30-Aug-2026"
+                ],
+                answer: "A"
+            },
+            {
+                question: "How many years does the course last?",
+                options: [
+                    "A. 1 year",
+                    "B. 2 years",
+                    "C. 3 years",
+                    "D. 1.5 years"
+                ],
+                answer: "B"
+            },
+            {
+                question: "How many study periods are in the course?",
+                options: [
+                    "A. 4",
+                    "B. 5",
+                    "C. 6",
+                    "D. 8"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the length of each study period?",
+                options: [
+                    "A. 8 weeks",
+                    "B. 10 weeks",
+                    "C. 12 weeks",
+                    "D. 14 weeks"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the indicative total tuition fee (before scholarship)?",
+                options: [
+                    "A. $60,000",
+                    "B. $55,500",
+                    "C. $50,000",
+                    "D. $48,000"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What scholarship percentage was applied?",
+                options: [
+                    "A. 10%",
+                    "B. 20%",
+                    "C. 12%",
+                    "D. 5%"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the tuition fee after applying the scholarship?",
+                options: [
+                    "A. $44,400",
+                    "B. $50,000",
+                    "C. $48,840",
+                    "D. $46,300"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the amount of course fee paid for 1 year?",
+                options: [
+                    "A. AUD 22,000",
+                    "B. AUD 24,420",
+                    "C. AUD 23,500",
+                    "D. AUD 26,000"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the PSW (Post-Study Work) duration?",
+                options: [
+                    "A. 2 years",
+                    "B. 4 years",
+                    "C. 1 year",
+                    "D. 3 years"
+                ],
+                answer: "D"
+            },
+            {
+                question: "What is the student visa subclass?",
+                options: [
+                    "A. 590",
+                    "B. 600",
+                    "C. 500",
+                    "D. 476"
+                ],
+                answer: "C"
+            },
+            {
+                question: "Under visa condition 8105, which of the following students are NOT subject to the 48-hour per fortnight work limit?",
+                options: [
+                    "A. Bachelor’s degree students",
+                    "B. Master’s by coursework students",
+                    "C. Master’s by research or PhD students",
+                    "D. Vocational education and training students"
+                ],
+                answer: "A"
+            },
+            {
+                question: "Under visa condition 8104, what is the dependent’s work limitation if the student is studying a Master’s by research or PhD?",
+                options: [
+                    "A. Cannot work at all",
+                    "B. Can work up to 20 hours per fortnight",
+                    "C. Can work full-time",
+                    "D. Can work over 48 hours per fortnight"
+                ],
+                answer: "C"
+            },
+            {
+                question: "How many subjects must be completed to graduate?",
+                options: [
+                    "A. 12",
+                    "B. 14",
+                    "C. 16",
+                    "D. 18"
+                ],
+                answer: "C"
+            },
+            {
+                question: "How many credit points is the entire course worth?",
+                options: [
+                    "A. 120",
+                    "B. 160",
+                    "C. 180",
+                    "D. 140"
+                ],
+                answer: "B"
+            },
+            {
+                question: "How many core research subjects are included in the curriculum?",
+                options: [
+                    "A. 6",
+                    "B. 10",
+                    "C. 8",
+                    "D. 4"
+                ],
+                answer: "C"
+            },
+            {
+                question: "Which of the following is NOT a core subject in the Master of Research Studies course?",
+                options: [
+                    "A. RES611 Critical Literature Review",
+                    "B. RES612 Developing the Research Proposal",
+                    "C. RES615 Research Communication",
+                    "D. RES617 Advanced Research Design"
+                ],
+                answer: "D"
+            },
+            {
+                question: "Which of the following is NOT listed as a core research subject?",
+                options: [
+                    "A. RES613 Methodology and Research Design",
+                    "B. RES614 Preliminary Research Thesis",
+                    "C. RES616 Leading Research Innovation and Commercialisation",
+                    "D. RES619 Research Analytics"
+                ],
+                answer: "D"
+            },
+            {
+                question: "What is the bank name?",
+                options: [
+                    "A. Nabil Bank",
+                    "B. Everest Bank",
+                    "C. Global IME Bank (Sharadpur)",
+                    "D. Himalayan Bank"
+                ],
+                answer: "C"
+            },
+            {
+                question: "Who is the loanee?",
+                options: [
+                    "A. Purna Kumari Gurung",
+                    "B. Kalshi Ram Gurung",
+                    "C. Prabin Gurung",
+                    "D. Bipin Gurung"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the total loan amount?",
+                options: [
+                    "A. 80 Lakh",
+                    "B. 65 Lakh",
+                    "C. 70 Lakh",
+                    "D. 60 Lakh"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the EMI per month?",
+                options: [
+                    "A. Rs. 71,500",
+                    "B. Rs. 73,773.06",
+                    "C. Rs. 76,000",
+                    "D. Rs. 70,000"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the interest rate?",
+                options: [
+                    "A. 9.50%",
+                    "B. 9.75%",
+                    "C. 9.66%",
+                    "D. 10.00%"
+                ],
+                answer: "C"
+            },
+            {
+                question: "Who owns the collateral provided in the bank?",
+                options: [
+                    "A. Applicant",
+                    "B. Spouse",
+                    "C. Kalshi Ram Gurung",
+                    "D. Purna Kumari Gurung"
+                ],
+                answer: "D"
+            },
+            {
+                question: "What is the mother’s property valuation?",
+                options: [
+                    "A. 88 Lakh",
+                    "B. 1 Crore",
+                    "C. 95 Lakh",
+                    "D. 80 Lakh"
+                ],
+                answer: "A"
+            },
+            {
+                question: "What is the total property valuation of mother-in-law?",
+                options: [
+                    "A. 1.1 Crore",
+                    "B. 1.3 Crore",
+                    "C. 1.2 Crore",
+                    "D. 2.08 Crore"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the total property valuation?",
+                options: [
+                    "A. 1.1 Crore",
+                    "B. 1.3 Crore",
+                    "C. 1.2 Crore",
+                    "D. 2.08 Crore"
+                ],
+                answer: "D"
+            },
+            {
+                question: "What is the marriage registration date?",
+                options: [
+                    "A. 15-05-2023",
+                    "B. 28-05-2023",
+                    "C. 01-06-2023",
+                    "D. 30-05-2023"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the marriage date by social custom?",
+                options: [
+                    "A. 12-01-2018",
+                    "B. 18-01-2018",
+                    "C. 20-01-2018",
+                    "D. 10-01-2018"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the monthly income of Kalshi Ram Gurung?",
+                options: [
+                    "A. Rs. 80,000",
+                    "B. Rs. 88,859",
+                    "C. Rs. 90,000",
+                    "D. Rs. 70,000"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the house rent earned by Purna Kumari Gurung per month?",
+                options: [
+                    "A. Rs. 35,000",
+                    "B. Rs. 45,000",
+                    "C. Rs. 40,000",
+                    "D. Rs. 50,000"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the monthly income of Prabin Gurung?",
+                options: [
+                    "A. Rs. 120,000",
+                    "B. Rs. 130,000",
+                    "C. Rs. 123,559",
+                    "D. Rs. 121,000"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the combined annual income of all the sponsors?",
+                options: [
+                    "A. Rs. 2,525,418",
+                    "B. Rs. 1,482,702",
+                    "C. Rs. 1,066,308",
+                    "D. Rs. 3,029,010"
+                ],
+                answer: "D"
+            },
+            {
+                question: "What CGPA did the applicant get in MBA (Evening)?",
+                options: [
+                    "A. 3.70",
+                    "B. 3.95",
+                    "C. 3.60",
+                    "D. 3.85"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What CGPA did the spouse get in MBA from Pokhara University?",
+                options: [
+                    "A. 3.50",
+                    "B. 3.37",
+                    "C. 3.25",
+                    "D. 3.70"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the estimated annual cost of living for the student?",
+                options: [
+                    "A. AUD 28,000",
+                    "B. AUD 29,710",
+                    "C. AUD 30,000",
+                    "D. AUD 27,000"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the estimated annual cost of living for the dependent?",
+                options: [
+                    "A. AUD 10,000",
+                    "B. AUD 10,394",
+                    "C. AUD 11,000",
+                    "D. AUD 9,800"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What is the total estimated annual cost of living for the applicant and dependent?",
+                options: [
+                    "A. AUD 10,000",
+                    "B. AUD 40,104",
+                    "C. AUD 11,000",
+                    "D. AUD 9,800"
+                ],
+                answer: "B"
+            },
+            {
+                question: "Which of the following documents were provided by Kalshi Ram Gurung?",
+                options: [
+                    "A. Pension documents and bank statement",
+                    "B. PAN card and tax clearance certificate",
+                    "C. Land ownership certificate and valuation report",
+                    "D. House rent agreement and building permit"
+                ],
+                answer: "A"
+            },
+            {
+                question: "What type of documents did Purna Kumari Gurung submit?",
+                options: [
+                    "A. Service certificate and pension letter",
+                    "B. House rent agreement/Bank statement (1 year) / PAN of tenant /Business Registration/ 3 years Tax Receipt/Building Completion Certificate/ Citizenship of tenant and landlord/ land ownership certificate",
+                    "C. PAN of landlord and birth certificate",
+                    "D. Tax clearance certificate and utility bills"
+                ],
+                answer: "B"
+            },
+            {
+                question: "Which sponsor provided a service certificate, tax report and bank statement?",
+                options: [
+                    "A. Kalshi Ram Gurung",
+                    "B. Bishnu Maya Ghale",
+                    "C. Prabin Gurung",
+                    "D. Ward office"
+                ],
+                answer: "C" // Note: Based on the document, no single sponsor explicitly provides all three documents (service certificate, tax report, and bank statement). The original answer 'C. Prabin Gurung' provided a 'service certificate'.
+            },
+            {
+                question: "What documents did Bishnu Maya Ghale provide?",
+                options: [
+                    "A. Pension card and PAN",
+                    "B. Service letter and business registration",
+                    "C. Land ownership certificate, property valuation, and 3 years tax receipt",
+                    "D. Rent agreement and tax clearance certificate"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What kind of documents were submitted by the bank?",
+                options: [
+                    "A. Tax statement and income declaration",
+                    "B. Property valuation report, Mortgage Deed Agreement, and loan sanction paper",
+                    "C. Business registration and service certificate",
+                    "D. Pension and salary slip"
+                ],
+                answer: "B"
+            },
+            {
+                question: "What documents were provided by the Ward Office?",
+                options: [
+                    "A. House tax and PAN",
+                    "B. Business registration and valuation certificate",
+                    "C. Relation certificate, 3 years tax clearance, and annual income verification",
+                    "D. Rent agreement and birth certificate"
+                ],
+                answer: "C"
+            },
+            {
+                question: "What is the name of the tenant and business name?",
+                options: [
+                    "A. Durga Devi Dura (Gurung)/Rupshree Collection",
+                    "B. Durga Gurung/ Rupshree Suppliers",
+                    "C. Durga Maya Dura/Rupshree Fancy",
+                    "D. Durga Parsad Dura/Riya Collection"
+                ],
+                answer: "A"
+            }
         ];
 
+        // State variables for quiz management
         let currentQuestionIndex = 0;
         let score = 0;
+        let showResults = false;
+        let selectedAnswer = null; // Stores { char: 'A', text: 'A. Option Text' }
+        let quizStarted = false;
+        const LOCK_KEY = "02142015"; // The lock key number
 
-        const questionContainer = document.getElementById('question-container');
-        const stageContainer = document.getElementById('stage-container');
-        const finalScreen = document.getElementById('final-screen');
-        const progressBar = document.getElementById('progress-bar');
+        const appContainer = document.getElementById('app-container');
 
-        function startGame() {
-            currentQuestionIndex = 0;
-            score = 0;
-            finalScreen.classList.add('hidden');
-            questionContainer.classList.remove('hidden');
-            stageContainer.classList.remove('hidden');
-            updateProgressBar();
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const question = questions[currentQuestionIndex];
-            
-            if (question.stage) {
-                stageContainer.innerHTML = `<div class="stage-title">${question.stage}</div>`;
-            } else if (currentQuestionIndex === 0) {
-                 stageContainer.innerHTML = `<div class="stage-title">${questions[0].stage}</div>`;
-            }
-
-
-            questionContainer.innerHTML = `
-                <div class="question-text">${currentQuestionIndex + 1}. ${question.question}</div>
-                <div class="options-grid">
-                    ${question.options.map(option => `
-                        <button class="option-btn" onclick="selectAnswer(this, ${option.correct || false})">
-                            <span class="option-icon">${option.icon}</span>
-                            <span>${option.text}</span>
-                        </button>
-                    `).join('')}
+        // Function to render the start screen
+        function renderStartScreen() {
+            appContainer.innerHTML = `
+                <div class="w-full max-w-md text-center transform transition-all duration-500 hover:scale-105 mx-auto">
+                    <h1 class="text-4xl font-extrabold text-gray-800 mb-6">
+                        Welcome to the Quiz!
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-8">
+                        Please enter the lock key to start the quiz.
+                    </p>
+                    <input type="password" id="lockKeyInput" placeholder="Enter lock key"
+                        class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p id="errorMessage" class="text-red-600 text-sm mb-4 hidden">Incorrect key. Please try again.</p>
+                    <button id="unlockButton"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                        Unlock Quiz
+                    </button>
                 </div>
-                <div id="feedback" class="feedback-panel hidden"></div>
-                <button id="next-btn" class="hidden" onclick="nextQuestion()">Next Step</button>
             `;
-        }
-
-        function selectAnswer(button, isCorrect) {
-            const options = document.querySelectorAll('.option-btn');
-            options.forEach(btn => {
-                btn.disabled = true;
-                const correctOption = questions[currentQuestionIndex].options.find(o => o.correct);
-                if (btn.textContent.trim().includes(correctOption.text)) {
-                    btn.classList.add('correct');
+            document.getElementById('unlockButton').addEventListener('click', handleUnlockQuiz);
+            document.getElementById('lockKeyInput').addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    handleUnlockQuiz();
                 }
             });
-
-            const feedbackPanel = document.getElementById('feedback');
-            const nextBtn = document.getElementById('next-btn');
-            
-            if (isCorrect) {
-                score++;
-                button.classList.add('correct');
-                feedbackPanel.innerHTML = `<div class="feedback-title">Correct! 🎉</div> ${questions[currentQuestionIndex].explanation}`;
-                feedbackPanel.className = 'feedback-panel correct';
-            } else {
-                button.classList.add('wrong');
-                feedbackPanel.innerHTML = `<div class="feedback-title">Not quite... 🤔</div> ${questions[currentQuestionIndex].explanation}`;
-                feedbackPanel.className = 'feedback-panel wrong';
-            }
-
-            feedbackPanel.classList.remove('hidden');
-            nextBtn.classList.remove('hidden');
-            updateProgressBar();
         }
 
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                showQuestion();
+        // Function to handle unlocking the quiz
+        function handleUnlockQuiz() {
+            const lockKeyInput = document.getElementById('lockKeyInput');
+            const errorMessage = document.getElementById('errorMessage');
+            if (lockKeyInput.value === LOCK_KEY) {
+                quizStarted = true;
+                renderQuizScreen();
             } else {
-                showFinalScreen();
+                errorMessage.classList.remove('hidden'); // Show error message
+                lockKeyInput.value = ''; // Clear input
             }
         }
-        
-        function updateProgressBar() {
-            const progress = ((currentQuestionIndex) / questions.length) * 100;
-            progressBar.style.width = `${progress}%`;
-            progressBar.innerText = `${Math.round(progress)}% Complete`;
-        }
 
-        function showFinalScreen() {
-            questionContainer.innerHTML = '';
-            stageContainer.innerHTML = '';
-            finalScreen.classList.remove('hidden');
-            const percentage = Math.round((score / questions.length) * 100);
-            let message = '';
-            if (percentage === 100) {
-                message = "Flawless Victory! You're an absolute master of Kusum's case file. Her visa is practically guaranteed with your expertise!";
-            } else if (percentage >= 80) {
-                message = "Excellent Work! You have a deep understanding of Kusum's goals and circumstances. A truly impressive performance!";
-            } else if (percentage >= 50) {
-                message = "Solid Effort! You've got a good grasp of the key points, but a few details slipped by. Kusum's case is strong but could be stronger.";
-            } else {
-                message = "A Valiant Attempt! This was a tough challenge. Reviewing the document again will reveal all the secrets to ensuring Kusum's success.";
+        // Function to render the quiz question screen
+        function renderQuizScreen() {
+            if (showResults) {
+                renderResultsScreen();
+                return;
             }
 
-            finalScreen.innerHTML = `
-                <h2>Quest Complete!</h2>
-                <p>${message}</p>
-                <div class="final-score">${score} / ${questions.length}</div>
-                <p>You achieved a ${percentage}% success rate!</p>
-                <button id="restart-btn" onclick="startGame()">Attempt the Quest Again</button>
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            appContainer.innerHTML = `
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-700">
+                        Question ${currentQuestionIndex + 1} of ${quizQuestions.length}
+                    </h2>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+                        <div id="progressBar"
+                            class="bg-blue-600 h-2.5 rounded-full transition-all duration-500 ease-out"
+                            style="width: ${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%">
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-3xl font-bold text-gray-800 mb-8 leading-tight">
+                    ${currentQuestion.question}
+                </h3>
+
+                <div id="optionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Options will be dynamically added here -->
+                </div>
+
+                <div id="feedbackMessage" class="text-center text-lg mb-4"></div>
+
+                <div class="flex justify-end">
+                    <button id="nextButton"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg shadow-md
+                        transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-75
+                        opacity-50 cursor-not-allowed" disabled>
+                        ${currentQuestionIndex === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
+                    </button>
+                </div>
             `;
-             progressBar.style.width = `100%`;
-             progressBar.innerText = `100% Complete`;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.setAttribute('data-option-char', option.charAt(0)); // Store the char for easy lookup
+                button.classList.add(
+                    'p-4', 'rounded-lg', 'text-left', 'text-lg', 'font-medium', 'transition-all', 'duration-200',
+                    'bg-gray-100', 'text-gray-800', 'hover:bg-blue-100', 'hover:text-blue-700', 'hover:shadow-md',
+                    'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-500', 'focus:ring-opacity-75'
+                );
+                button.addEventListener('click', () => handleAnswerSelect(option.charAt(0), option, button));
+                optionsContainer.appendChild(button);
+            });
+
+            // The next button is initially disabled. It will be enabled based on answer correctness.
+            document.getElementById('nextButton').addEventListener('click', handleNextQuestion);
         }
 
-        startGame();
-    </script>
+        // Function to handle answer selection and provide immediate feedback
+        function handleAnswerSelect(optionChar, fullOptionText, clickedButton) {
+            // Disable all option buttons to prevent multiple selections
+            const optionButtons = document.querySelectorAll('#optionsContainer button');
+            optionButtons.forEach(btn => btn.disabled = true);
 
+            const currentQuestion = quizQuestions[currentQuestionIndex];
+            const feedbackMessageDiv = document.getElementById('feedbackMessage');
+            const nextButton = document.getElementById('nextButton');
+
+            // Find the correct option text for display
+            const correctOptionText = currentQuestion.options.find(opt => opt.charAt(0) === currentQuestion.answer);
+
+            if (optionChar === currentQuestion.answer) {
+                // Correct Answer
+                clickedButton.classList.remove('bg-gray-100', 'text-gray-800', 'hover:bg-blue-100', 'hover:text-blue-700');
+                clickedButton.classList.add('bg-green-500', 'text-white', 'shadow-lg', 'scale-105');
+                score++;
+
+                feedbackMessageDiv.innerHTML = `<p class="text-green-600 font-semibold">Correct!</p>`;
+                
+                // Automatically advance after a short delay
+                setTimeout(() => {
+                    handleNextQuestion();
+                }, 1000); // 1 second delay
+                
+            } else {
+                // Incorrect Answer
+                clickedButton.classList.remove('bg-gray-100', 'text-gray-800', 'hover:bg-blue-100', 'hover:text-blue-700');
+                clickedButton.classList.add('bg-red-500', 'text-white', 'shadow-lg', 'scale-105');
+
+                // Highlight the correct answer
+                const correctButton = document.querySelector(`[data-option-char="${currentQuestion.answer}"]`);
+                if (correctButton) {
+                    correctButton.classList.remove('bg-gray-100', 'text-gray-800', 'hover:bg-blue-100', 'hover:text-blue-700');
+                    correctButton.classList.add('bg-green-500', 'text-white', 'shadow-lg');
+                }
+
+                feedbackMessageDiv.innerHTML = `
+                    <p class="text-red-600 font-semibold">Incorrect!</p>
+                    <p class="text-gray-700 text-sm mt-2">The correct answer was: <span class="font-medium text-green-600">${correctOptionText}</span></p>
+                `;
+
+                // Enable the next button for manual progression
+                nextButton.disabled = false;
+                nextButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // Function to handle moving to the next question
+        function handleNextQuestion() {
+            // Clear feedback message and re-enable option buttons for next question
+            const feedbackMessageDiv = document.getElementById('feedbackMessage');
+            if (feedbackMessageDiv) {
+                feedbackMessageDiv.innerHTML = '';
+            }
+            const optionButtons = document.querySelectorAll('#optionsContainer button');
+            optionButtons.forEach(btn => btn.disabled = false); // Re-enable for the next question
+
+            const nextQuestion = currentQuestionIndex + 1;
+            if (nextQuestion < quizQuestions.length) {
+                currentQuestionIndex = nextQuestion;
+                selectedAnswer = null; // Reset selected answer for the next question
+                renderQuizScreen();
+            } else {
+                showResults = true;
+                renderResultsScreen();
+            }
+        }
+
+        // Function to render the results screen (simplified)
+        function renderResultsScreen() {
+            const percentage = (score / quizQuestions.length) * 100;
+            appContainer.innerHTML = `
+                <div class="w-full max-w-md text-center transform transition-all duration-500 hover:scale-105 mx-auto">
+                    <h2 class="text-4xl font-extrabold text-gray-800 mb-6">
+                        Quiz Results
+                    </h2>
+                    <p class="text-2xl text-gray-700 mb-4">
+                        You scored ${score} out of ${quizQuestions.length}!
+                    </p>
+                    <p class="text-3xl font-bold text-blue-600 mb-8">
+                        ${percentage.toFixed(2)}%
+                    </p>
+                    <button id="restartButton"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                        Restart Quiz
+                    </button>
+                </div>
+            `;
+            document.getElementById('restartButton').addEventListener('click', handleRestartQuiz);
+        }
+
+        // Function to handle restarting the quiz
+        function handleRestartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            showResults = false;
+            selectedAnswer = null;
+            quizStarted = false;
+            renderStartScreen();
+        }
+
+        // Initial render when the page loads
+        window.onload = renderStartScreen;
+    </script>
 </body>
 </html>
-�
