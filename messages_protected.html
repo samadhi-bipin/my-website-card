@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Protected Discord Chat Viewer</title>
+  <style>
+    :root{
+      --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --dim:#9ca3af; --accent:#38bdf8; --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text)}
+    #viewer{height:100%; display:none}
+    iframe{border:0; width:100%; height:100%; background:#0b1220}
+
+    /* Gate */
+    #gate{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:radial-gradient(1200px 800px at 50% 40%, rgba(56,189,248,.08), transparent), rgba(15,23,42,.96); padding:24px}
+    .card{width:100%; max-width:460px; background:var(--panel); border:1px solid #1f2937; border-radius:14px; padding:22px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{margin:0 0 8px; font-size:20px}
+    p{margin:0 0 16px; color:var(--dim)}
+    .row{display:flex; gap:10px; align-items:center}
+    .input{flex:1; padding:10px 12px; border-radius:10px; border:1px solid #334155; outline:none; background:#0b1220; color:var(--text)}
+    .btn{padding:10px 14px; border-radius:10px; border:1px solid #334155; background:#0b1220; color:var(--text); cursor:pointer}
+    .btn:hover{border-color:#475569}
+    .hint{margin-top:10px; font-size:12px; color:var(--dim); display:flex; align-items:center; gap:8px}
+    .switch{display:inline-flex; align-items:center; gap:8px; cursor:pointer; user-select:none}
+    .error{margin-top:10px; font-size:12px; color:var(--danger); min-height:16px}
+    .toggle{background:none; border:0; color:var(--dim); cursor:pointer}
+
+    .shake{animation:shake .28s linear}
+    @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  </style>
+</head>
+<body>
+  <!-- Passkey Gate -->
+  <div id="gate">
+    <div class="card" id="card">
+      <h1>Enter passkey</h1>
+      <div class="row">
+        <input id="pass" class="input" type="password" placeholder="Passkey" autocomplete="off" />
+        <button id="btn" class="btn" type="button">Unlock</button>
+        <button id="toggle" class="toggle" title="Show/Hide passkey">👁️</button>
+      </div>
+      <label class="hint switch">
+        <input id="remember" type="checkbox" /> Remember this device for 7 days
+      </label>
+      <div id="err" class="error"></div>
+    </div>
+  </div>
+
+  <!-- Viewer -->
+  <div id="viewer">
+    <iframe id="frame" title="Discord messages"></iframe>
+  </div>
+
+  <script>
+    // ====== Settings ======
+    const PASSKEY = "02142015";                 // change this if you want a different passkey
+    const TARGET_FILE = "messages.html";        // must be in the same folder
+    const STORE_KEY = "pp_chat_gate_ok";
+    const STORE_EXP_DAYS = 7;                    // remember duration
+    // =======================
+
+    const $ = sel => document.querySelector(sel);
+
+    function setRemembered(ok){
+      try{
+        if(!ok){ localStorage.removeItem(STORE_KEY); return; }
+        const exp = Date.now() + STORE_EXP_DAYS*24*60*60*1000;
+        localStorage.setItem(STORE_KEY, String(exp));
+      }catch(e){/* ignore storage errors */}
+    }
+
+    function isRemembered(){
+      try{
+        const exp = Number(localStorage.getItem(STORE_KEY) || 0);
+        return exp && Date.now() < exp;
+      }catch(e){ return false; }
+    }
+
+    function openViewer(){
+      $("#gate").style.display = "none";
+      $("#viewer").style.display = "block";
+      $("#frame").src = TARGET_FILE;
+    }
+
+    function showError(msg){
+      const err = $("#err");
+      err.textContent = msg || "Incorrect passkey";
+      const card = $("#card");
+      card.classList.remove("shake"); // restart animation
+      void card.offsetWidth;
+      card.classList.add("shake");
+    }
+
+    function unlock(){
+      const val = $("#pass").value.trim();
+      if(val === PASSKEY){
+        if($("#remember").checked) setRemembered(true);
+        openViewer();
+      }else{
+        showError();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if(isRemembered()){
+        openViewer();
+        return;
+      }
+      $("#btn").addEventListener("click", unlock);
+      $("#pass").addEventListener("keydown", (e)=>{ if(e.key === "Enter") unlock(); });
+      $("#toggle").addEventListener("click", ()=>{
+        const p = $("#pass"); p.type = p.type === "password" ? "text" : "password";
+      });
+      $("#pass").focus();
+    });
+  </script>
+</body>
+</html>
